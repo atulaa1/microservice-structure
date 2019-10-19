@@ -57,6 +57,7 @@ Main technologies:
 2. How to manage distributed transaction
 3. How to design and separate correct tables for micro-services  
 4. Interservice communication   
+5. Distributed cache  
 
 
 ---
@@ -67,4 +68,5 @@ Main technologies:
 1. [Microservices with Spring Boot — Intro to Microservices (Part 1)](https://medium.com/omarelgabrys-blog/microservices-with-spring-boot-intro-to-microservices-part-1-c0d24cd422c3)
 2. [MicroServices using Spring Boot & Spring Cloud – Part 1 : Overview](https://sivalabs.in/2018/03/microservices-using-springboot-spring-cloud-part-1-overview/)
 3. [Martin Flower - Microservices](https://youtu.be/Irlw-LGIJO4)  
-4. [Microserives IO](https://microservices.io/)
+4. [Microserives IO](https://microservices.io/)  
+5. [Spring Cloud Config](https://sivalabs.in/2018/03/microservices-part-2-configuration-management-spring-cloud-config-vault/)

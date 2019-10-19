@@ -2,6 +2,7 @@ package com.example.demo.microservice.galery.controller;
 
 import com.example.demo.microservice.galery.model.Gallery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,15 @@ public class HomeController {
     @Autowired
     private Environment env;
 
+    @Value("${message}")
+    private String messageOfOptimus;
+
     @RequestMapping("/")
     public String home() {
         // This is useful for debugging
         // When having multiple instance of gallery service running at different ports.
         // We load balance among them, and display which instance received the request.
+        System.out.println(messageOfOptimus);
         return "Hello from Gallery Service running at port: " + env.getProperty("local.server.port");
     }
 
