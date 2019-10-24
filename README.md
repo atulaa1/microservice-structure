@@ -7,31 +7,46 @@ Window version
 2. Move to root folder of image service and start image service eureka-client by commands  
 `cd ..demo\microservice\image`  
 `mvn spring-boot:run`  
-3. Move to root folder of gallery service and start gallery service eureka-client by commands  
+3. Set Environment variable for Vault server  
+Linux  
+`export VAULT_ADDR=’http://127.0.0.1:8200′`  
+Window  
+![Environment Window](environmentWin.png)  
+start Vault server  
+`vault server -dev`  
+Get root token from console after start Vault  
+![Root token](rootToken.png)  
+Update this token to bootstrap.properties of galery module  
+Write config for gallery service. Move root folder this repo and run below command  
+`vault kv put secret/gallery-service @testConfig.json`
+4. Start config server  
+`cd ..demo\microservice\config`  
+`mvn spring-boot:run` 
+5. Move to root folder of gallery service and start gallery service eureka-client by commands  
 `cd ..demo\microservice\galery`  
 `mvn spring-boot:run` 
-4. To check service registry and service discovery, pls access eureka server by go to this on browser  
+6. To check service registry and service discovery, pls access eureka server by go to Zuul Dashboard. Access url below on browser  
 `http://localhost:8761/`  
-5. Start auth service , run below commands  
+7. Start auth service , run below commands  
 `cd ..\demo\microservice\auth`  
 `mvn spring-boot:run`  
 
-6. Start Zuul like a gateway  
+8. Start Zuul like a gateway  
 `cd ..\demo\microservice\zuul`  
 `mvn spring-boot:run`  
 
-7. The result like this  
+9. The result like this  
 ![The result](result.png)  
 
-8. Test microsevices before authentication  . We can use postman to run this GET request  
+10. Test microsevices before authentication  . We can use postman to run this GET request  
 `localhost:8762/gallery`  
 ![unauthorized](unauthorized.png)  
 
-9. Get token by call to API (POST)  with header "Content-Type" is application/json   
+11. Get token by call to API (POST)  with header "Content-Type" is application/json   
 `localhost:8762/auth`  
 ![get token](gettoken.png)  
 
-10. Call gallery service with received token  
+12. Call gallery service with received token  
 ![call with token](callWithToken.png)
 
 ---
@@ -69,4 +84,7 @@ Main technologies:
 2. [MicroServices using Spring Boot & Spring Cloud – Part 1 : Overview](https://sivalabs.in/2018/03/microservices-using-springboot-spring-cloud-part-1-overview/)
 3. [Martin Flower - Microservices](https://youtu.be/Irlw-LGIJO4)  
 4. [Microserives IO](https://microservices.io/)  
-5. [Spring Cloud Config](https://sivalabs.in/2018/03/microservices-part-2-configuration-management-spring-cloud-config-vault/)
+5. [Spring Cloud Config](https://sivalabs.in/2018/03/microservices-part-2-configuration-management-spring-cloud-config-vault/)  
+6. [Vault get started](https://learn.hashicorp.com/vault/getting-started/first-secret)
+7. [Spring cloud circuit breaker](https://sivalabs.in/2018/03/spring-cloud-netflix-circuit-breaker/)
+8. [Which Strategy You Will Choose to Implement Circuit-Breaker](https://medium.com/@1000lin/which-strategy-you-will-choose-to-implement-circuit-breaker-for-microservices-architecture-dcd690f3c90)
