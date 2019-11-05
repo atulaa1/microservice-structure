@@ -84,7 +84,7 @@ Main technologies:
 `docker-compose exec  vaul sh -c "cd /vault/file &&  vault kv put secret/gallery-service @testConfig.json"`
 4. Get token from auth: 
 `curl -i -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password":"12345"}' localhost:8762/auth`
-5. Calling to gallery service use token above: 
+5. Calling to gallery service use above token : 
 `curl -H  "Content-Type: application/json" -H "Authorization: Bearer yourtoken" localhost:8762/gallery`  
   
 ---
