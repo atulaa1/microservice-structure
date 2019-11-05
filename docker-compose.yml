@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  eureka:
+    build: ./demo.microservice.eureka
+    image: demo.microservice/eureka:1.0
+    ports:
+     - "8761:8761"
+
+  image:
+    build: ./demo.microservice.image
+    image: demo.microservice/image:1.0
+    ports:
+      - "8400:8400"
+    environment:
+      - "SERVER_PORTS=8400" 
+      - "NAMING_SERVER=http://eureka:8761/eureka"
+
+  vaul:
+    image: vault:1.2.3
+    ports:
+      - "8200:8200"
+    environment:
+      - "VAULT_DEV_ROOT_TOKEN_ID=d3m0m1cr0service"
+      - 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200'
+      - 'VAULT_ADDR=http://0.0.0.0:8200'
+      - 'VAULT_TOKEN=d3m0m1cr0service'
+      #- 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}}, "default_lease_ttl": "168h", "max_lease_ttl": "720h", "listener": {"tcp": {"address": "0.0.0.0:8200", "tls_disable": "true"}}}'
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ${PWD}/testConfig.json:/vault/file/testConfig.json
+    ##command: sh -c "cd /vault/file && vault kv put secret/gallery-service @testConfig.json"
+    
+  config:
+    build: ./demo.microservice.config
+    image: demo.microservice/config:1.0
+    ports:
+      - "8888:8888"
+    environment:
+      - "SERVER_PORTS=8888"
+      - "CONFIG_URI=https://github.com/atulaa1/spring-cloud-config"
+
+  gallery:
+    build: ./demo.microservice.galery
+    image: demo.microservice/gallery:1.0
+    environment:
+      - "SERVER_PORTS=8200"
+      - "NAMING_SERVER=http://eureka:8761/eureka"
+      - "CONFIG_SERVER=http://config:8888"
+      - "VAULT_SERVER=vaul"
+      - "VAULT_PORT=8200"
+      - "VAULT_AUTH=token"
+      - "VAULT_TOKEN=d3m0m1cr0service"
+
+  auth:
+    build: ./demo.microservice.auth
+    image: demo.microservice.auth/auth:1.0
+    environment:
+      - "SERVER_PORTS=9100"
+      - "NAMING_SERVER=http://eureka:8761/eureka"
+    ports:
+      - "9100:9100"
+  zuul:
+    build: ./demo.microservice.zuul
+    image: demo.microservice.zuul/zuul:1.0
+    environment:
+      - "SERVER_PORTS=8762"
+      - "NAMING_SERVER=http://eureka:8761/eureka"
+    ports:
+      - "8762:8762"
+    
